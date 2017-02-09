@@ -1,1 +1,1 @@
-# bridgepf-utils
+Collection of tools and utilites built for Sage Bionetworks for the Bridge project.
