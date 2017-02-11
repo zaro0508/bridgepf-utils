@@ -5,7 +5,7 @@ BRIDGEUSER=$(cat ~/.bridge/bridge-server.conf | grep bridge.user | cut -d'=' -f2
 #ENDPOINT="--endpoint-url http://localhost:8000"
 ENDPOINT=""
 
-# Download and install
+# Download and install local dynamo
 echo `date`: Bridge dynamo install starting
 #pkill -9 java
 #rm -rf ~/dynamodb/
@@ -16,6 +16,17 @@ echo `date`: Bridge dynamo install starting
 # Start dynamo db
 #java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar 2>&1 >> ./dynamo.log&
 
+# Create S3 buckets
+aws s3 mb s3://com-museborn-attachments-${BRIDGEENV}
+aws s3 mb s3://com-museborn-consents-${BRIDGEENV}
+aws s3 mb s3://com-museborn-upload-cms-cert-${BRIDGEENV}
+aws s3 mb s3://com-museborn-upload-cms-priv-local-${BRIDGEENV}
+aws s3 mb s3://com-museborn-upload-${BRIDGEENV}
+aws s3 mb s3://com-museborn-userdata-${BRIDGEENV}
+
+exit
+
+# Clean dynamo
 aws dynamodb delete-table --table-name ${BRIDGEENV}-${BRIDGEUSER}-BackfillRecord
 aws dynamodb delete-table --table-name ${BRIDGEENV}-${BRIDGEUSER}-BackfillTask
 aws dynamodb delete-table --table-name ${BRIDGEENV}-${BRIDGEUSER}-CompoundActivityDefinition

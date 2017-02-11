@@ -1,0 +1,723 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "BridgePF Cloudformation",
+  "Mappings": {
+    "AWSLoadbalancerAccount": {
+      "us-east-1": {"ARN": "127311923021"},
+      "us-west-2": {"ARN": "797873946194"},
+      "us-west-1": {"ARN": "027434742980"},
+      "eu-west-1": {"ARN": "156460612806"},
+      "eu-central-1": {"ARN": "054676820928"},
+      "ap-southeast-1": {"ARN": "114774131450"},
+      "ap-northeast-1": {"ARN": "582318560864"},
+      "ap-southeast-2": {"ARN": "783225319266"},
+      "ap-northeast-2": {"ARN": "600734575887"},
+      "sa-east-1": {"ARN": "507241528517"}
+    }
+  },
+  "Metadata": {
+    "AWS::CloudFormation::Interface" : {
+      "ParameterGroups" : [
+        {
+          "Label" : { "default" : "App Deployment Settings" },
+          "Parameters" : [      
+            "EC2KeyName",
+            "ElasticCacheInstanceType",
+            "S3BucketPrefix",
+            "AppFileName",
+            "EC2InstanceType"
+          ]
+        },
+        {
+          "Label" : { "default" : "Bridge Env Settings" },
+          "Parameters" : [
+            "BridgeEnv",
+            "BridgeUser"
+          ]
+        },
+        {
+          "Label" : { "default" : "Bridge Server Config File Settings, empty settings will not be set, defaulting to conf/bridge-server.conf" },
+          "Parameters" : [
+            "AppConfAdminEmail",
+            "AppConfAdminPassword",
+            "AppConfaSyncWorkerThreadCount",
+        
+            "AppConfAwsKey",
+            "AppConfAwsSecretKey",
+            "AppConfAwsKeyUpload",
+            "AppConfAwsSecretKeyUpload",
+            "AppConfAwsKeyUploadCms",
+            "AppConfAwsSecretKeyUploadCms",
+        
+            "AppConfBridgeHealthcodeKey",
+            "AppConfBridgeHealthcodeRedisKey",
+        
+            "AppConfFphsIdAddLimit",
+            "AppConfExternalIdAddLimit",
+            "AppConfHostPostfix",
+            "AppConfWebservicesUrl",
+            "AppenUploadBucket",
+            "AppConfAttachmentBucket",
+            "AppConfUploadCmsCertBucket",
+            "AppConfUploadCmsPrivBucket",
+            "AppConfConsentsBucket",
+            "AppConfUddSqsQueueUrl",
+            "AppConfStudyWhitelist",
+        
+            "AppConfEmailUnsubscribeToken",
+        
+            "AppConfEnterpriseStormpathHref",
+            "AppConfEnterpriseStormpathId",
+            "AppConfEnterpriseStormpathSecret",
+        
+            "AppConfExporterSynapseId",
+        
+            "AppConfExternalIdLockDuration",
+        
+            "AppConfMaxNumZipEntries",
+            "AppConfZipEntrySize",
+        
+            "AppConfRedisMaxTotal",
+            "AppConfRedisMinIdle",
+            "AppConfRedisMaxIdle",
+            "AppConfRedisTimeout",
+        
+            "AppConfRoute53Zone",
+            "AppConfSnsKey",
+            "AppConfSnsSecretKey",
+        
+            "AppConfSupportEmail",
+            "AppConfSynapseApiKey",
+            "AppConfSynapseUser",
+            "AppConfSysopsEmail",
+        
+            "AppConfTestSynapseUserId"
+          ]
+        }
+      ]
+    }
+  },
+  "Parameters": {
+    "EC2KeyName": {
+      "Description": "The EC2 Key Pair to allow SSH access to appservers",
+      "Type": "AWS::EC2::KeyPair::KeyName",
+      "ConstraintDescription": "must be the name of an existing EC2 KeyPair."
+    },
+    "BridgeEnv": {
+      "Type": "String"
+    },
+    "BridgeUser": {
+      "Type": "String"
+    },
+    "ElasticCacheInstanceType": {
+      "Type": "String",
+      "Description": "Instance type to use for Elastic Cache cluster",
+      "Default": "cache.t2.micro",
+      "AllowedValues": [
+        "cache.t2.micro",
+        "cache.t2.small",
+        "cache.t2.medium",
+        "cache.m3.medium",
+        "cache.m3.large",
+        "cache.m3.xlarge",
+        "cache.m3.2xlarge",
+        "cache.r3.large",
+        "cache.r3.xlarge",
+        "cache.r3.2xlarge",
+        "cache.r3.4xlarge",
+        "cache.r3.8xlarge"
+      ]
+    },
+    "EC2InstanceType": {
+      "Type": "String",
+      "Description": "Instance type to use for Elastic Beanstalk Instances",
+      "Default": "m4.medium",
+      "AllowedValues": [
+        "t1.micro",
+        "t2.nano",
+        "t2.micro",
+        "t2.small",
+        "t2.medium",
+        "t2.large",
+        "t2.xlarge",
+        "t2.2xlarge",
+        "m1.small",
+        "m1.medium",
+        "m1.large",
+        "m1.xlarge",
+        "m3.medium",
+        "m3.large",
+        "m3.xlarge",
+        "m3.2xlarge",
+        "m4.large",
+        "m4.xlarge",
+        "m4.2xlarge",
+        "m4.4xlarge",
+        "m4.10xlarge",
+        "m4.16xlarge",
+        "m2.xlarge",
+        "m2.2xlarge",
+        "m2.4xlarge",
+        "cr1.8xlarge",
+        "r3.large",
+        "r3.xlarge",
+        "r3.2xlarge",
+        "r3.4xlarge",
+        "r3.8xlarge",
+        "r4.large",
+        "r4.xlarge",
+        "r4.2xlarge",
+        "r4.4xlarge",
+        "r4.8xlarge",
+        "r4.16xlarge",
+        "x1.16xlarge",
+        "x1.32xlarge",
+        "i2.xlarge",
+        "i2.2xlarge",
+        "i2.4xlarge",
+        "i2.8xlarge",
+        "hi1.4xlarge",
+        "hs1.8xlarge",
+        "c1.medium",
+        "c1.xlarge",
+        "c3.large",
+        "c3.xlarge",
+        "c3.2xlarge",
+        "c3.4xlarge",
+        "c3.8xlarge",
+        "c4.large",
+        "c4.xlarge",
+        "c4.2xlarge",
+        "c4.4xlarge",
+        "c4.8xlarge",
+        "cc1.4xlarge",
+        "cc2.8xlarge",
+        "g2.2xlarge",
+        "g2.8xlarge",
+        "cg1.4xlarge",
+        "p2.xlarge",
+        "p2.8xlarge",
+        "p2.16xlarge",
+        "d2.xlarge",
+        "d2.2xlarge",
+        "d2.4xlarge",
+        "d2.8xlarge",
+        "f1.2xlarge",
+        "f1.16xlarge"
+      ]
+    },
+    "S3BucketPrefix": {
+      "Type": "String",
+      "Default": "org-sagebase-"
+    },
+    "AppFileName": {
+      "Type": "String",
+      "Description": "App zip filename for deployment from s3 deployment bucket",
+      "Default": "bridgepf-0.1-SNAPSHOT.zip"
+    },
+    
+    
+    "AppConfAdminEmail": {
+      "Type": "String"
+    },
+    "AppConfAdminPassword": {
+      "Type": "String"
+    },
+    "AppConfaSyncWorkerThreadCount": {
+      "Type": "Number"
+    },
+
+    "AppConfAwsKey": {
+      "Type": "String",
+      "MinLength": 20,
+      "MaxLength": 20
+    },
+    "AppConfAwsSecretKey": {
+      "Type": "String",
+      "MinLength": 40,
+      "MaxLength": 40
+    },
+    "AppConfAwsKeyUpload": {
+      "Type": "String",
+      "MinLength": 20,
+      "MaxLength": 20
+    },
+    "AppConfAwsSecretKeyUpload": {
+      "Type": "String",
+      "MinLength": 40,
+      "MaxLength": 40
+    },
+    "AppConfAwsKeyUploadCms": {
+      "Type": "String",
+      "MinLength": 20,
+      "MaxLength": 20
+    },
+    "AppConfAwsSecretKeyUploadCms": {
+      "Type": "String",
+      "MinLength": 40,
+      "MaxLength": 40
+    },
+
+    "AppConfBridgeHealthcodeKey": {
+      "Type": "String"
+    },
+    "AppConfBridgeHealthcodeRedisKey": {
+      "Type": "String"
+    },
+
+    "AppConfFphsIdAddLimit": {
+      "Type": "Number"
+    },
+    "AppConfExternalIdAddLimit": {
+      "Type": "Number"
+    },
+    "AppConfHostPostfix": {
+      "Type": "String"
+    },
+    "AppConfWebservicesUrl": {
+      "Type": "String"
+    },
+    "AppenUploadBucket": {
+      "Type": "String"
+    },
+    "AppConfAttachmentBucket": {
+      "Type": "String"
+    },
+    "AppConfUploadCmsCertBucket": {
+      "Type": "String"
+    },
+    "AppConfUploadCmsPrivBucket": {
+      "Type": "String"
+    },
+    "AppConfConsentsBucket": {
+      "Type": "String"
+    },
+    "AppConfUddSqsQueueUrl": {
+      "Type": "String"
+    },
+    "AppConfStudyWhitelist": {
+      "Type": "String"
+    },
+
+    "AppConfEmailUnsubscribeToken": {
+      "Type": "String"
+    },
+
+    "AppConfEnterpriseStormpathHref": {
+      "Type": "String"
+    },
+    "AppConfEnterpriseStormpathId": {
+      "Type": "String"
+    },
+    "AppConfEnterpriseStormpathSecret": {
+      "Type": "String"
+    },
+
+    "AppConfExporterSynapseId": {
+      "Type": "Number"
+    },
+
+    "AppConfExternalIdLockDuration": {
+      "Type": "Number"
+    },
+
+    "AppConfMaxNumZipEntries": {
+      "Type": "Number"
+    },
+    "AppConfZipEntrySize": {
+      "Type": "Number"
+    },
+
+    "AppConfRedisMaxTotal": {
+      "Type": "Number"
+    },
+    "AppConfRedisMinIdle": {
+      "Type": "Number"
+    },
+    "AppConfRedisMaxIdle": {
+      "Type": "Number"
+    },
+    "AppConfRedisTimeout": {
+      "Type": "Number"
+    },
+
+    "AppConfRoute53Zone": {
+      "Type": "String"
+    },
+    "AppConfSnsKey": {
+      "Type": "String"
+    },
+    "AppConfSnsSecretKey": {
+      "Type": "String"
+    },
+
+    "AppConfSupportEmail": {
+      "Type": "String"
+    },
+    "AppConfSynapseApiKey": {
+      "Type": "String"
+    },
+    "AppConfSynapseUser": {
+      "Type": "String"
+    },
+    "AppConfSysopsEmail": {
+      "Type": "String"
+    },
+
+    "AppConfTestSynapseUserId": {
+      "Type": "Number"
+    }
+  },
+  "Resources": {
+    "DDBPolicy": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": "dynamodb:*",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:dynamodb:::",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      {
+                        "Ref": "BridgeEnv"
+                      },
+                      "-",
+                      {
+                        "Ref": "BridgeUser"
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "PolicyName": "DynamoAccessPolicy",
+        "Roles": [
+          {
+            "Ref": "AppserverRole"
+          }
+        ]
+      }
+    },
+    "S3Policy": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": "s3:*",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:s3:::",
+                      {
+                        "Ref": "S3BucketPrefix"
+                      },
+                      "-attachments-",
+                      {
+                        "Ref": "BridgeEnv"
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:s3:::",
+                      {
+                        "Ref": "S3BucketPrefix"
+                      },
+                      "-consents-",
+                      {
+                        "Ref": "BridgeEnv"
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:s3:::",
+                      {
+                        "Ref": "S3BucketPrefix"
+                      },
+                      "-upload-cms-cert-",
+                      {
+                        "Ref": "BridgeEnv"
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:s3:::",
+                      {
+                        "Ref": "S3BucketPrefix"
+                      },
+                      "-upload-cms-priv-local-",
+                      {
+                        "Ref": "BridgeEnv"
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:s3:::",
+                      {
+                        "Ref": "S3BucketPrefix"
+                      },
+                      "-upload-",
+                      {
+                        "Ref": "BridgeEnv"
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:s3:::",
+                      {
+                        "Ref": "S3BucketPrefix"
+                      },
+                      "-userdata-",
+                      {
+                        "Ref": "BridgeEnv"
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:s3:::",
+                      {
+                        "Ref": "S3BucketPrefix"
+                      },
+                      "-deployment-",
+                      {
+                        "Ref": "BridgeEnv"
+                      }
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "PolicyName": "AppS3AccessPolicy",
+        "Roles": [
+          {
+            "Ref": "AppserverRole"
+          }
+        ]
+      }
+    },
+    "Ec2PullPolicy": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "ec2:DescribeInstances"
+              ],
+              "Resource": "*"
+            }
+          ]
+        },
+        "PolicyName": "AllowEC2Pull",
+        "Roles": [
+          {
+            "Ref": "AppserverRole"
+          }
+        ]
+      }
+    },
+    "AppserverRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "ec2.amazonaws.com"
+                ]
+              },
+              "Action": [
+                "sts:AssumeRole"
+              ]
+            }
+          ]
+        },
+        "Path": "/"
+      }
+    },
+    "AppserverInstanceProfile": {
+      "Type": "AWS::IAM::InstanceProfile",
+      "Properties": {
+        "Path": "/",
+        "Roles": [
+          {
+            "Ref": "AppserverRole"
+          }
+        ]
+      }
+    },
+    "ECSecurityGroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Elasticache Security Group",
+        "SecurityGroupIngress": [
+          {
+            "IpProtocol": "tcp",
+            "FromPort": "6379",
+            "ToPort": "6379",
+            "SourceSecurityGroupId": {
+              "Ref": "EBAppServers"
+            }
+          }
+        ]
+      }
+    },
+    "ECCluster": {
+      "Type": "AWS::ElastiCache::CacheCluster",
+      "Properties": {
+        "AutoMinorVersionUpgrade": "true",
+        "Engine": "redis",
+        "CacheNodeType": {
+          "Ref": "ElasticCacheInstanceType"
+        },
+        "NumCacheNodes": "2",
+        "CacheSecurityGroupNames": [
+          {
+            "Fn::GetAtt": [
+              "ECSecurityGroup",
+              "GroupId"
+            ]
+          }
+        ]
+      }
+    },
+
+    "EBAppServers": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Security group for appserver instances",
+        "SecurityGroupIngress": [
+          {
+            "IpProtocol": "tcp",
+            "FromPort": "80",
+            "ToPort": "80",
+            "CIDRIP": "0.0.0.0/0"
+          },
+          {
+            "IpProtocol": "tcp",
+            "FromPort": "443",
+            "ToPort": "443",
+            "CIDRIP": "0.0.0.0/0"
+          }
+        ]
+      }
+    },
+
+    "BridgeApplicationVersion": {
+      "Type": "AWS::ElasticBeanstalk::ApplicationVersion",
+      "Properties": {
+        "ApplicationName": "BridgePF-1.0",
+        "Description": "Initial Application Version",
+        "SourceBundle": {
+          "S3Bucket": { "Fn::Join": [ "-", [ {"Ref": "S3BucketPrefix"}, "deployment", {"Ref": "BridgeEnv"} ] ] },
+          "S3Key": "elasticbeanstalk.zip"
+        }
+      }
+    },
+    "BridgeConfigurationTemplate": {
+      "Type": "AWS::ElasticBeanstalk::ConfigurationTemplate",
+      "Properties": {
+        "ApplicationName": { "Ref": "BridgeApplicationVersion" },
+        "Description": "AWS ElasticBeanstalk BridgePF Configuration Template",
+        "OptionSettings": [
+          {
+            "Namespace": "aws:autoscaling:asg",
+            "OptionName": "MinSize",
+            "Value": "1"
+          },
+          {
+            "Namespace": "aws:autoscaling:asg",
+            "OptionName": "MaxSize",
+            "Value": "3"
+          },
+          {
+            "Namespace": "aws:autoscaling:launchconfiguration",
+            "OptionName": "IamInstanceProfile",
+            "Value": {"Ref": "AppserverInstanceProfile"}
+          },
+          {
+            "Namespace": "aws:autoscaling:launchconfiguration",
+            "OptionName": "InstanceType",
+            "Value": {"Ref": "EC2InstanceType"}
+          },
+          {
+            "Namespace": "aws:elasticbeanstalk:environment",
+            "OptionName": "EnvironmentType",
+            "Value": "LoadBalanced"
+          },
+          {
+            "Namespace" : "aws:elasticbeanstalk:application:environment",
+            "OptionName" : "admin_email",
+            "Value" : { "Ref" : "AppConfAdminEmail" }
+          }
+        ],
+        "SolutionStackName": "64bit Amazon Linux running Java 8"
+      }
+    },
+    "BridgeEnvironment": {
+      "Type": "AWS::ElasticBeanstalk::Environment",
+      "Properties": {
+        "ApplicationName": { "Ref": "BridgeApplicationVersion" },
+        "Description": "AWS ElasticBeanstalk BridgePF Environment",
+        "TemplateName": { "Ref": "BridgeConfigurationTemplate" },
+        "VersionLabel": { "Ref": "BridgeApplicationVersion" },
+        "OptionSettings": [{
+          "Namespace": "aws:autoscaling:launchconfiguration",
+          "OptionName": "EC2KeyName",
+          "Value": {"Ref": "EC2KeyName"}
+        }]
+      }
+    }
+  }
+}
