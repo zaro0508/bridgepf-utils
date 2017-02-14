@@ -23,8 +23,8 @@
           "Parameters" : [      
             "EC2KeyName",
             "ElasticCacheInstanceType",
-            "S3BucketPrefix",
-            "AppFileName",
+            "AppDeployBucket",
+            "AppDeployFile",
             "EC2InstanceType"
           ]
         },
@@ -36,62 +36,77 @@
           ]
         },
         {
+          "Label" : { "default" : "Bridge Server Keys" },
+          "Parameters" : [
+            "AwsKey",
+            "AwsSecretKey",
+            "AwsKeyUpload",
+            "AwsSecretKeyUpload",
+            "AwsKeyUploadCms",
+            "AwsSecretKeyUploadCms"
+          ]
+        },
+        {
+          "Label" : { "default" : "Stormpath Settings" },
+          "Parameters" : [
+            "EnterpriseStormpathHref",
+            "EnterpriseStormpathId",
+            "EnterpriseStormpathSecret"
+          ]
+        },
+        {
+          "Label": { "default" : "Bridge Server S3 buckets, will default to appropriate buckets for env if left blank"},
+          "Parameters": [
+            "UploadBucket",
+            "AttachmentBucket",
+            "UploadCMSCertBucket",
+            "UploadCMSPrivBucket",
+            "ConsentsBucket"
+          ]
+        },
+        {
           "Label" : { "default" : "Bridge Server Config File Settings, empty settings will not be set, defaulting to conf/bridge-server.conf" },
           "Parameters" : [
-            "AppConfAdminEmail",
-            "AppConfAdminPassword",
-            "AppConfaSyncWorkerThreadCount",
+            "AdminEmail",
+            "AdminPassword",
+            "AsyncWorkerThreadCount",
         
-            "AppConfAwsKey",
-            "AppConfAwsSecretKey",
-            "AppConfAwsKeyUpload",
-            "AppConfAwsSecretKeyUpload",
-            "AppConfAwsKeyUploadCms",
-            "AppConfAwsSecretKeyUploadCms",
+            "BridgeHealthcodeKey",
+            "BridgeHealthcodeRedisKey",
+
+            "DDBMaxRetries",
         
-            "AppConfBridgeHealthcodeKey",
-            "AppConfBridgeHealthcodeRedisKey",
+            "FphsIdAddLimit",
+            "ExternalIdAddLimit",
+            "HostPostfix",
+            "WebservicesUrl",
+            "UddSqsQueueUrl",
+            "StudyWhitelist",
         
-            "AppConfFphsIdAddLimit",
-            "AppConfExternalIdAddLimit",
-            "AppConfHostPostfix",
-            "AppConfWebservicesUrl",
-            "AppenUploadBucket",
-            "AppConfAttachmentBucket",
-            "AppConfUploadCmsCertBucket",
-            "AppConfUploadCmsPrivBucket",
-            "AppConfConsentsBucket",
-            "AppConfUddSqsQueueUrl",
-            "AppConfStudyWhitelist",
+            "EmailUnsubscribeToken",
         
-            "AppConfEmailUnsubscribeToken",
+            "ExporterSynapseId",
         
-            "AppConfEnterpriseStormpathHref",
-            "AppConfEnterpriseStormpathId",
-            "AppConfEnterpriseStormpathSecret",
+            "ExternalIdLockDuration",
         
-            "AppConfExporterSynapseId",
+            "MaxNumZipEntries",
+            "ZipEntrySize",
         
-            "AppConfExternalIdLockDuration",
+            "RedisMaxTotal",
+            "RedisMinIdle",
+            "RedisMaxIdle",
+            "RedisTimeout",
         
-            "AppConfMaxNumZipEntries",
-            "AppConfZipEntrySize",
+            "Route53Zone",
+            "SnsKey",
+            "SnsSecretKey",
         
-            "AppConfRedisMaxTotal",
-            "AppConfRedisMinIdle",
-            "AppConfRedisMaxIdle",
-            "AppConfRedisTimeout",
+            "SupportEmail",
+            "SynapseApiKey",
+            "SynapseUser",
+            "SysopsEmail",
         
-            "AppConfRoute53Zone",
-            "AppConfSnsKey",
-            "AppConfSnsSecretKey",
-        
-            "AppConfSupportEmail",
-            "AppConfSynapseApiKey",
-            "AppConfSynapseUser",
-            "AppConfSysopsEmail",
-        
-            "AppConfTestSynapseUserId"
+            "TestSynapseUserId"
           ]
         }
       ]
@@ -131,7 +146,7 @@
     "EC2InstanceType": {
       "Type": "String",
       "Description": "Instance type to use for Elastic Beanstalk Instances",
-      "Default": "m4.medium",
+      "Default": "t2.small",
       "AllowedValues": [
         "t1.micro",
         "t2.nano",
@@ -206,166 +221,181 @@
         "f1.16xlarge"
       ]
     },
-    "S3BucketPrefix": {
+    "AppDeployBucket": {
       "Type": "String",
-      "Default": "org-sagebase-"
+      "Description": "S3 bucket for deployment",
+      "Default": "com-museborn-deployment-dev"
     },
-    "AppFileName": {
+    "AppDeployFile": {
       "Type": "String",
-      "Description": "App zip filename for deployment from s3 deployment bucket",
-      "Default": "bridgepf-0.1-SNAPSHOT.zip"
-    },
-    
-    
-    "AppConfAdminEmail": {
-      "Type": "String"
-    },
-    "AppConfAdminPassword": {
-      "Type": "String"
-    },
-    "AppConfaSyncWorkerThreadCount": {
-      "Type": "Number"
+      "Description": "S3 file to deploy to elastic beanstalk",
+      "Default": "elasticbeanstalk.zip"
     },
 
-    "AppConfAwsKey": {
+    "UploadBucket": {
+      "Type": "String",
+      "Default": "com-museborn-upload-dev"
+    },
+    "AttachmentBucket": {
+      "Type": "String",
+      "Default": "com-museborn-attachment-dev"
+    },
+    "UploadCMSCertBucket": {
+      "Type": "String",
+      "Default": "com-museborn-upload-cms-cert-dev"
+    },
+    "UploadCMSPrivBucket": {
+      "Type": "String",
+      "Default": "com-museborn-upload-cms-priv-dev"
+    },
+    "ConsentsBucket": {
+      "Type": "String",
+      "Default": "com-museborn-consents-dev"
+    },
+
+    "AdminEmail": {
+      "Type": "String"
+    },
+    "AdminPassword": {
+      "Type": "String",
+      "NoEcho": true
+    },
+    "AsyncWorkerThreadCount": {
+      "Type": "String"
+    },
+
+    "AwsKey": {
       "Type": "String",
       "MinLength": 20,
       "MaxLength": 20
     },
-    "AppConfAwsSecretKey": {
+    "AwsSecretKey": {
       "Type": "String",
       "MinLength": 40,
-      "MaxLength": 40
+      "MaxLength": 40,
+      "NoEcho": true
     },
-    "AppConfAwsKeyUpload": {
+    "AwsKeyUpload": {
       "Type": "String",
       "MinLength": 20,
       "MaxLength": 20
     },
-    "AppConfAwsSecretKeyUpload": {
+    "AwsSecretKeyUpload": {
       "Type": "String",
       "MinLength": 40,
-      "MaxLength": 40
+      "MaxLength": 40,
+      "NoEcho": true
     },
-    "AppConfAwsKeyUploadCms": {
+    "AwsKeyUploadCms": {
       "Type": "String",
       "MinLength": 20,
       "MaxLength": 20
     },
-    "AppConfAwsSecretKeyUploadCms": {
+    "AwsSecretKeyUploadCms": {
       "Type": "String",
       "MinLength": 40,
-      "MaxLength": 40
+      "MaxLength": 40,
+      "NoEcho": true
     },
 
-    "AppConfBridgeHealthcodeKey": {
+    "BridgeHealthcodeKey": {
       "Type": "String"
     },
-    "AppConfBridgeHealthcodeRedisKey": {
-      "Type": "String"
-    },
-
-    "AppConfFphsIdAddLimit": {
-      "Type": "Number"
-    },
-    "AppConfExternalIdAddLimit": {
-      "Type": "Number"
-    },
-    "AppConfHostPostfix": {
-      "Type": "String"
-    },
-    "AppConfWebservicesUrl": {
-      "Type": "String"
-    },
-    "AppenUploadBucket": {
-      "Type": "String"
-    },
-    "AppConfAttachmentBucket": {
-      "Type": "String"
-    },
-    "AppConfUploadCmsCertBucket": {
-      "Type": "String"
-    },
-    "AppConfUploadCmsPrivBucket": {
-      "Type": "String"
-    },
-    "AppConfConsentsBucket": {
-      "Type": "String"
-    },
-    "AppConfUddSqsQueueUrl": {
-      "Type": "String"
-    },
-    "AppConfStudyWhitelist": {
+    "BridgeHealthcodeRedisKey": {
       "Type": "String"
     },
 
-    "AppConfEmailUnsubscribeToken": {
+    "DDBMaxRetries": {
       "Type": "String"
     },
 
-    "AppConfEnterpriseStormpathHref": {
+    "FphsIdAddLimit": {
       "Type": "String"
     },
-    "AppConfEnterpriseStormpathId": {
+    "ExternalIdAddLimit": {
       "Type": "String"
     },
-    "AppConfEnterpriseStormpathSecret": {
+    "HostPostfix": {
       "Type": "String"
     },
-
-    "AppConfExporterSynapseId": {
-      "Type": "Number"
-    },
-
-    "AppConfExternalIdLockDuration": {
-      "Type": "Number"
-    },
-
-    "AppConfMaxNumZipEntries": {
-      "Type": "Number"
-    },
-    "AppConfZipEntrySize": {
-      "Type": "Number"
-    },
-
-    "AppConfRedisMaxTotal": {
-      "Type": "Number"
-    },
-    "AppConfRedisMinIdle": {
-      "Type": "Number"
-    },
-    "AppConfRedisMaxIdle": {
-      "Type": "Number"
-    },
-    "AppConfRedisTimeout": {
-      "Type": "Number"
-    },
-
-    "AppConfRoute53Zone": {
+    "WebservicesUrl": {
       "Type": "String"
     },
-    "AppConfSnsKey": {
+    "UddSqsQueueUrl": {
       "Type": "String"
     },
-    "AppConfSnsSecretKey": {
+    "StudyWhitelist": {
       "Type": "String"
     },
 
-    "AppConfSupportEmail": {
-      "Type": "String"
-    },
-    "AppConfSynapseApiKey": {
-      "Type": "String"
-    },
-    "AppConfSynapseUser": {
-      "Type": "String"
-    },
-    "AppConfSysopsEmail": {
+    "EmailUnsubscribeToken": {
       "Type": "String"
     },
 
-    "AppConfTestSynapseUserId": {
-      "Type": "Number"
+    "EnterpriseStormpathHref": {
+      "Type": "String"
+    },
+    "EnterpriseStormpathId": {
+      "Type": "String"
+    },
+    "EnterpriseStormpathSecret": {
+      "Type": "String",
+      "NoEcho": true
+    },
+
+    "ExporterSynapseId": {
+      "Type": "String"
+    },
+
+    "ExternalIdLockDuration": {
+      "Type": "String"
+    },
+
+    "MaxNumZipEntries": {
+      "Type": "String"
+    },
+    "ZipEntrySize": {
+      "Type": "String"
+    },
+
+    "RedisMaxTotal": {
+      "Type": "String"
+    },
+    "RedisMinIdle": {
+      "Type": "String"
+    },
+    "RedisMaxIdle": {
+      "Type": "String"
+    },
+    "RedisTimeout": {
+      "Type": "String"
+    },
+
+    "Route53Zone": {
+      "Type": "String"
+    },
+    "SnsKey": {
+      "Type": "String"
+    },
+    "SnsSecretKey": {
+      "Type": "String",
+      "NoEcho": true
+    },
+
+    "SupportEmail": {
+      "Type": "String"
+    },
+    "SynapseApiKey": {
+      "Type": "String"
+    },
+    "SynapseUser": {
+      "Type": "String"
+    },
+    "SysopsEmail": {
+      "Type": "String"
+    },
+    "TestSynapseUserId": {
+      "Type": "String"
     }
   },
   "Resources": {
@@ -425,109 +455,47 @@
               "Action": "s3:*",
               "Resource": [
                 {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:s3:::",
-                      {
-                        "Ref": "S3BucketPrefix"
-                      },
-                      "-attachments-",
-                      {
-                        "Ref": "BridgeEnv"
-                      }
-                    ]
-                  ]
+                  "Fn::Join": ["",
+                  [
+                    "arn:aws:s3:::",
+                    {"Ref":"AttachmentBucket"}
+                  ]]
                 },
                 {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:s3:::",
-                      {
-                        "Ref": "S3BucketPrefix"
-                      },
-                      "-consents-",
-                      {
-                        "Ref": "BridgeEnv"
-                      }
-                    ]
-                  ]
+                  "Fn::Join": ["",
+                  [
+                    "arn:aws:s3:::",
+                    {"Ref":"UploadBucket"}
+                  ]]
                 },
                 {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:s3:::",
-                      {
-                        "Ref": "S3BucketPrefix"
-                      },
-                      "-upload-cms-cert-",
-                      {
-                        "Ref": "BridgeEnv"
-                      }
-                    ]
-                  ]
+                  "Fn::Join": ["",
+                  [
+                    "arn:aws:s3:::",
+                    {"Ref":"ConsentsBucket"}
+                  ]]
                 },
                 {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:s3:::",
-                      {
-                        "Ref": "S3BucketPrefix"
-                      },
-                      "-upload-cms-priv-local-",
-                      {
-                        "Ref": "BridgeEnv"
-                      }
-                    ]
-                  ]
+                  "Fn::Join": ["",
+                  [
+                    "arn:aws:s3:::",
+                    {"Ref":"UploadCMSCertBucket"}
+                  ]]
                 },
                 {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:s3:::",
-                      {
-                        "Ref": "S3BucketPrefix"
-                      },
-                      "-upload-",
-                      {
-                        "Ref": "BridgeEnv"
-                      }
-                    ]
-                  ]
+                  "Fn::Join": ["",
+                  [
+                    "arn:aws:s3:::",
+                    {"Ref":"UploadCMSPrivBucket"}
+                  ]]
                 },
                 {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:s3:::",
-                      {
-                        "Ref": "S3BucketPrefix"
-                      },
-                      "-userdata-",
-                      {
-                        "Ref": "BridgeEnv"
-                      }
-                    ]
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:s3:::",
-                      {
-                        "Ref": "S3BucketPrefix"
-                      },
-                      "-deployment-",
-                      {
-                        "Ref": "BridgeEnv"
-                      }
-                    ]
-                  ]
+                  "Fn::Join": ["",
+                  [
+                    "arn:aws:s3:::",
+                    {"Ref":"AppDeployBucket"}
+                  ]]
+
                 }
               ]
             }
@@ -598,19 +566,17 @@
       }
     },
     "ECSecurityGroup": {
-      "Type": "AWS::EC2::SecurityGroup",
+      "Type": "AWS::ElastiCache::SecurityGroup",
       "Properties": {
-        "GroupDescription": "Elasticache Security Group",
-        "SecurityGroupIngress": [
-          {
-            "IpProtocol": "tcp",
-            "FromPort": "6379",
-            "ToPort": "6379",
-            "SourceSecurityGroupId": {
-              "Ref": "EBAppServers"
-            }
-          }
-        ]
+        "Description": "Elasticache Security Group"
+      }
+    },
+    "ECSecurityGroupIngress": {
+      "Type": "AWS::ElastiCache::SecurityGroupIngress",
+      "Properties": {
+        "CacheSecurityGroupName": {"Ref": "ECSecurityGroup"},
+        "EC2SecurityGroupName": {"Ref": "EBAppServers"},
+        "EC2SecurityGroupOwnerId": {"Ref": "AWS::AccountId"}
       }
     },
     "ECCluster": {
@@ -621,16 +587,10 @@
         "CacheNodeType": {
           "Ref": "ElasticCacheInstanceType"
         },
-        "NumCacheNodes": "2",
-        "CacheSecurityGroupNames": [
-          {
-            "Fn::GetAtt": [
-              "ECSecurityGroup",
-              "GroupId"
-            ]
-          }
-        ]
-      }
+        "NumCacheNodes": "1",
+        "CacheSecurityGroupNames": [{"Ref": "ECSecurityGroup"}]
+      },
+      "DependsOn": "ECSecurityGroup"
     },
 
     "EBAppServers": {
@@ -642,33 +602,41 @@
             "IpProtocol": "tcp",
             "FromPort": "80",
             "ToPort": "80",
-            "CIDRIP": "0.0.0.0/0"
+            "CidrIp": "0.0.0.0/0"
           },
           {
             "IpProtocol": "tcp",
             "FromPort": "443",
             "ToPort": "443",
-            "CIDRIP": "0.0.0.0/0"
+            "CidrIp": "0.0.0.0/0"
           }
         ]
       }
     },
 
-    "BridgeApplicationVersion": {
-      "Type": "AWS::ElasticBeanstalk::ApplicationVersion",
+    "BridgeApplication": {
+      "Type": "AWS::ElasticBeanstalk::Application",
       "Properties": {
-        "ApplicationName": "BridgePF-1.0",
-        "Description": "Initial Application Version",
-        "SourceBundle": {
-          "S3Bucket": { "Fn::Join": [ "-", [ {"Ref": "S3BucketPrefix"}, "deployment", {"Ref": "BridgeEnv"} ] ] },
-          "S3Key": "elasticbeanstalk.zip"
+        "Description": {
+          "Fn::Join": [
+            " ",
+            [
+              "Bridge PF Application:",
+              {
+                "Ref": "BridgeUser"
+              },
+              {
+                "Ref": "BridgeEnv"
+              }
+            ]
+          ]
         }
       }
     },
     "BridgeConfigurationTemplate": {
       "Type": "AWS::ElasticBeanstalk::ConfigurationTemplate",
       "Properties": {
-        "ApplicationName": { "Ref": "BridgeApplicationVersion" },
+        "ApplicationName": { "Ref": "BridgeApplication" },
         "Description": "AWS ElasticBeanstalk BridgePF Configuration Template",
         "OptionSettings": [
           {
@@ -698,17 +666,230 @@
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
+            "OptionName" : "bridge_env",
+            "Value" : { "Ref" : "BridgeEnv" }
+          },
+          {
+            "Namespace" : "aws:elasticbeanstalk:application:environment",
+            "OptionName" : "bridge_user",
+            "Value" : { "Ref" : "BridgeUser" }
+          },
+
+          {
+            "Namespace" : "aws:elasticbeanstalk:application:environment",
             "OptionName" : "admin_email",
-            "Value" : { "Ref" : "AppConfAdminEmail" }
+            "Value" : { "Ref" : "AdminEmail" }
+          },
+          {
+            "Namespace" : "aws:elasticbeanstalk:application:environment",
+            "OptionName" : "admin_password",
+            "Value" : { "Ref" : "AdminPassword" }
+          },
+          {
+            "Namespace" : "aws:elasticbeanstalk:application:environment",
+            "OptionName" : "async_worker_thread_count",
+            "Value" : { "Ref" : "AsyncWorkerThreadCount" }
+          },
+          {
+            "Namespace" : "aws:elasticbeanstalk:application:environment",
+            "OptionName" : "aws_key",
+            "Value" : { "Ref" : "AwsKey" }
+          },
+          {
+            "Namespace" : "aws:elasticbeanstalk:application:environment",
+            "OptionName" : "aws_secret_key",
+            "Value" : { "Ref" : "AwsSecretKey" }
+          },
+          {
+            "Namespace" : "aws:elasticbeanstalk:application:environment",
+            "OptionName" : "aws_key_upload",
+            "Value" : { "Ref" : "AwsKeyUpload" }
+          },
+          {
+            "Namespace" : "aws:elasticbeanstalk:application:environment",
+            "OptionName" : "aws_secret_key_upload",
+            "Value" : { "Ref" : "AwsSecretKeyUpload" }
+          },
+          {
+            "Namespace" : "aws:elasticbeanstalk:application:environment",
+            "OptionName" : "aws_key_upload_cms",
+            "Value" : { "Ref" : "AwsKeyUploadCms" }
+          },
+          {
+            "Namespace" : "aws:elasticbeanstalk:application:environment",
+            "OptionName" : "aws_secret_key_upload_cms",
+            "Value" : { "Ref" : "AwsSecretKeyUploadCms" }
+          },
+          {
+            "Namespace" : "aws:elasticbeanstalk:application:environment",
+            "OptionName" : "bridge_healthcode_key",
+            "Value" : { "Ref" : "BridgeHealthcodeKey" }
+          },
+          {
+            "Namespace" : "aws:elasticbeanstalk:application:environment",
+            "OptionName" : "bridge_healthcode_redis_key",
+            "Value" : { "Ref" : "BridgeHealthcodeRedisKey" }
+          },
+          {
+            "Namespace" : "aws:elasticbeanstalk:application:environment",
+            "OptionName" : "ddb_max_retries",
+            "Value" : { "Ref" : "DDBMaxRetries" }
+          },
+          {
+            "Namespace" : "aws:elasticbeanstalk:application:environment",
+            "OptionName" : {"Fn::Join": ["_", [{"Ref":"BridgeEnv"},"fphs","id","add","limit"]]},
+            "Value" : { "Ref" : "FphsIdAddLimit" }
+          },
+          {
+            "Namespace" : "aws:elasticbeanstalk:application:environment",
+            "OptionName" : {"Fn::Join": ["_", [{"Ref":"BridgeEnv"},"external","id","add","limit"]]},
+            "Value" : { "Ref" : "ExternalIdAddLimit" }
+          },
+          {
+            "Namespace" : "aws:elasticbeanstalk:application:environment",
+            "OptionName" : {"Fn::Join": ["_", [{"Ref":"BridgeEnv"},"host","postfix"]]},
+            "Value" : { "Ref" : "HostPostfix" }
+          },
+          {
+            "Namespace" : "aws:elasticbeanstalk:application:environment",
+            "OptionName" : {"Fn::Join": ["_", [{"Ref":"BridgeEnv"},"webservices","url"]]},
+            "Value" : { "Ref" : "WebservicesUrl" }
+          },
+          {
+            "Namespace" : "aws:elasticbeanstalk:application:environment",
+            "OptionName" : {"Fn::Join": ["_", [{"Ref":"BridgeEnv"},"upload","bucket"]]},
+            "Value" : { "Ref" : "UploadBucket" }
+          },
+          {
+            "Namespace" : "aws:elasticbeanstalk:application:environment",
+            "OptionName" : {"Fn::Join": ["_", [{"Ref":"BridgeEnv"},"attachment","bucket"]]},
+            "Value" : { "Ref" : "AttachmentBucket" }
+          },
+          {
+            "Namespace" : "aws:elasticbeanstalk:application:environment",
+            "OptionName" : {"Fn::Join": ["_", [{"Ref":"BridgeEnv"},"upload","cms","cert","bucket"]]},
+            "Value" : { "Ref" : "UploadCMSCertBucket" }
+          },
+          {
+            "Namespace" : "aws:elasticbeanstalk:application:environment",
+            "OptionName" : {"Fn::Join": ["_", [{"Ref":"BridgeEnv"},"upload","cms","priv","bucket"]]},
+            "Value" : { "Ref" : "UploadCMSPrivBucket" }
+          },
+          {
+            "Namespace" : "aws:elasticbeanstalk:application:environment",
+            "OptionName" : {"Fn::Join": ["_", [{"Ref":"BridgeEnv"},"consents","bucket"]]},
+            "Value" : { "Ref" : "ConsentsBucket" }
+          },
+          {
+            "Namespace" : "aws:elasticbeanstalk:application:environment",
+            "OptionName" : {"Fn::Join": ["_", [{"Ref":"BridgeEnv"},"udd","sqs","queue","url"]]},
+            "Value" : { "Ref" : "UddSqsQueueUrl" }
+          },
+          {
+            "Namespace" : "aws:elasticbeanstalk:application:environment",
+            "OptionName" : {"Fn::Join": ["_", [{"Ref":"BridgeEnv"},"study","whitelist"]]},
+            "Value" : { "Ref" : "StudyWhitelist" }
+          },
+          {
+            "Namespace" : "aws:elasticbeanstalk:application:environment",
+            "OptionName" : "max_num_zip_entries",
+            "Value" : { "Ref" : "MaxNumZipEntries" }
+          },
+          {
+            "Namespace" : "aws:elasticbeanstalk:application:environment",
+            "OptionName" : "max_num_entry_size",
+            "Value" : { "Ref" : "ZipEntrySize" }
+          },
+          {
+            "Namespace" : "aws:elasticbeanstalk:application:environment",
+            "OptionName" : "redis_max_total",
+            "Value" : { "Ref" : "RedisMaxTotal" }
+          },
+          {
+            "Namespace" : "aws:elasticbeanstalk:application:environment",
+            "OptionName" : "redis_min_idle",
+            "Value" : { "Ref" : "RedisMinIdle" }
+          },
+          {
+            "Namespace" : "aws:elasticbeanstalk:application:environment",
+            "OptionName" : "redis_max_idle",
+            "Value" : { "Ref" : "RedisMaxIdle" }
+          },
+          {
+            "Namespace" : "aws:elasticbeanstalk:application:environment",
+            "OptionName" : "redis_timeout",
+            "Value" : { "Ref" : "RedisTimeout" }
+          },
+          {
+            "Namespace" : "aws:elasticbeanstalk:application:environment",
+            "OptionName" : "redis_url",
+            "Value" : {"Fn::Join": ["",
+              [
+                "redis://ABC:DEF@",
+                {"Fn::GetAtt": ["ECCluster", "RedisEndpoint.Address"]},
+                ":",
+                {"Fn::GetAtt": ["ECCluster", "RedisEndpoint.Port"]}
+              ]]}
+          },
+          {
+            "Namespace" : "aws:elasticbeanstalk:application:environment",
+            "OptionName" : "route53_zone",
+            "Value" : { "Ref" : "Route53Zone" }
+          },
+          {
+            "Namespace" : "aws:elasticbeanstalk:application:environment",
+            "OptionName" : "sns_key",
+            "Value" : { "Ref" : "SnsKey" }
+          },
+          {
+            "Namespace" : "aws:elasticbeanstalk:application:environment",
+            "OptionName" : "sns_secret_key",
+            "Value" : { "Ref" : "SnsSecretKey" }
+          },
+          {
+            "Namespace" : "aws:elasticbeanstalk:application:environment",
+            "OptionName" : "support_email",
+            "Value" : { "Ref" : "SupportEmail" }
+          },
+          {
+            "Namespace" : "aws:elasticbeanstalk:application:environment",
+            "OptionName" : "synapse_api_key",
+            "Value" : { "Ref" : "SynapseApiKey" }
+          },
+          {
+            "Namespace" : "aws:elasticbeanstalk:application:environment",
+            "OptionName" : "synapse_user",
+            "Value" : { "Ref" : "SynapseUser" }
+          },
+          {
+            "Namespace" : "aws:elasticbeanstalk:application:environment",
+            "OptionName" : "sysops_email",
+            "Value" : { "Ref" : "SysopsEmail" }
+          },
+          {
+            "Namespace" : "aws:elasticbeanstalk:application:environment",
+            "OptionName" : "test_synapse_user_id",
+            "Value" : { "Ref" : "TestSynapseUserId" }
           }
         ],
-        "SolutionStackName": "64bit Amazon Linux running Java 8"
+        "SolutionStackName": "64bit Amazon Linux 2016.09 v2.4.2 running Java 8"
+      }
+    },
+    "BridgeApplicationVersion": {
+      "Type": "AWS::ElasticBeanstalk::ApplicationVersion",
+      "Properties": {
+        "ApplicationName": {"Ref": "BridgeApplication"},
+        "Description": "Initial Application Version",
+        "SourceBundle": {
+          "S3Bucket": { "Ref": "AppDeployBucket"},
+          "S3Key": {"Ref": "AppDeployFile"}
+        }
       }
     },
     "BridgeEnvironment": {
       "Type": "AWS::ElasticBeanstalk::Environment",
       "Properties": {
-        "ApplicationName": { "Ref": "BridgeApplicationVersion" },
+        "ApplicationName": { "Ref": "BridgeApplication" },
         "Description": "AWS ElasticBeanstalk BridgePF Environment",
         "TemplateName": { "Ref": "BridgeConfigurationTemplate" },
         "VersionLabel": { "Ref": "BridgeApplicationVersion" },

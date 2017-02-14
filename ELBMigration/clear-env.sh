@@ -30,6 +30,7 @@ aws dynamodb delete-table --table-name ${BRIDGEENV}-${BRIDGEUSER}-Subpopulation 
 aws dynamodb delete-table --table-name ${BRIDGEENV}-${BRIDGEUSER}-Survey --profile=${PROFILE}
 aws dynamodb delete-table --table-name ${BRIDGEENV}-${BRIDGEUSER}-SurveyElement --profile=${PROFILE}
 aws dynamodb delete-table --table-name ${BRIDGEENV}-${BRIDGEUSER}-SynapseMetaTables --profile=${PROFILE}
+aws dynamodb delete-table --table-name ${BRIDGEENV}-${BRIDGEUSER}-SynapseSurveyTables --profile=${PROFILE}
 aws dynamodb delete-table --table-name ${BRIDGEENV}-${BRIDGEUSER}-SynapseTables --profile=${PROFILE}
 aws dynamodb delete-table --table-name ${BRIDGEENV}-${BRIDGEUSER}-Task --profile=${PROFILE}
 sleep 10
