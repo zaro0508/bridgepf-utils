@@ -91,12 +91,7 @@
         
             "MaxNumZipEntries",
             "ZipEntrySize",
-        
-            "RedisMaxTotal",
-            "RedisMinIdle",
-            "RedisMaxIdle",
-            "RedisTimeout",
-        
+
             "Route53Zone",
             "SnsKey",
             "SnsSecretKey",
@@ -107,6 +102,15 @@
             "SysopsEmail",
         
             "TestSynapseUserId"
+          ]
+        },
+        {
+          "Label": {"default": "Redis Client Tuning, empty settings will not be set, defaulting to conf/bridge-server.conf "},
+          "Parameters": [
+            "RedisMaxTotal",
+            "RedisMinIdle",
+            "RedisMaxIdle",
+            "RedisTimeout"
           ]
         }
       ]
@@ -575,7 +579,7 @@
       "Type": "AWS::ElastiCache::SecurityGroupIngress",
       "Properties": {
         "CacheSecurityGroupName": {"Ref": "ECSecurityGroup"},
-        "EC2SecurityGroupName": {"Ref": "EBAppServers"},
+        "EC2SecurityGroupName": {"Ref": "BridgeAppServers"},
         "EC2SecurityGroupOwnerId": {"Ref": "AWS::AccountId"}
       }
     },
@@ -593,7 +597,7 @@
       "DependsOn": "ECSecurityGroup"
     },
 
-    "EBAppServers": {
+    "BridgeAppServers": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
         "GroupDescription": "Security group for appserver instances",
@@ -792,6 +796,36 @@
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
+            "OptionName" : "email_unsubscribe_token",
+            "Value" : { "Ref" : "EmailUnsubscribeToken" }
+          },
+          {
+            "Namespace" : "aws:elasticbeanstalk:application:environment",
+            "OptionName" : "enterprise_stormpath_application_href",
+            "Value" : { "Ref" : "EnterpriseStormpathHref" }
+          },
+          {
+            "Namespace" : "aws:elasticbeanstalk:application:environment",
+            "OptionName" : "enterprise_stormpath_id",
+            "Value" : { "Ref" : "EnterpriseStormpathId" }
+          },
+          {
+            "Namespace" : "aws:elasticbeanstalk:application:environment",
+            "OptionName" : "enterprise_stormpath_secret",
+            "Value" : { "Ref" : "EnterpriseStormpathSecret" }
+          },
+          {
+            "Namespace" : "aws:elasticbeanstalk:application:environment",
+            "OptionName" : "exporter_synapse_id",
+            "Value" : { "Ref" : "ExporterSynapseId" }
+          },
+          {
+            "Namespace" : "aws:elasticbeanstalk:application:environment",
+            "OptionName" : "external_id_lock_duration",
+            "Value" : { "Ref" : "ExternalIdLockDuration" }
+          },
+          {
+            "Namespace" : "aws:elasticbeanstalk:application:environment",
             "OptionName" : "max_num_zip_entries",
             "Value" : { "Ref" : "MaxNumZipEntries" }
           },
@@ -893,11 +927,18 @@
         "Description": "AWS ElasticBeanstalk BridgePF Environment",
         "TemplateName": { "Ref": "BridgeConfigurationTemplate" },
         "VersionLabel": { "Ref": "BridgeApplicationVersion" },
-        "OptionSettings": [{
-          "Namespace": "aws:autoscaling:launchconfiguration",
-          "OptionName": "EC2KeyName",
-          "Value": {"Ref": "EC2KeyName"}
-        }]
+        "OptionSettings": [
+          {
+            "Namespace": "aws:autoscaling:launchconfiguration",
+            "OptionName": "EC2KeyName",
+            "Value": {"Ref": "EC2KeyName"}
+          },
+          {
+            "Namespace": "aws:autoscaling:launchconfiguration",
+            "OptionName": "SecurityGroups",
+            "Value": { "Ref": "BridgeAppServers" }
+          }
+        ]
       }
     }
   }
