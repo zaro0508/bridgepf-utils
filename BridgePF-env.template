@@ -25,7 +25,8 @@
             "ElasticCacheInstanceType",
             "AppDeployBucket",
             "AppDeployFile",
-            "EC2InstanceType"
+            "EC2InstanceType",
+            "SSLCertArn"
           ]
         },
         {
@@ -121,6 +122,11 @@
       "Description": "The EC2 Key Pair to allow SSH access to appservers",
       "Type": "AWS::EC2::KeyPair::KeyName",
       "ConstraintDescription": "must be the name of an existing EC2 KeyPair."
+    },
+    "SSLCertArn": {
+      "Description": "SSL certificate for load balancer",
+      "Type": "String",
+      "Default": "arn:aws:acm:us-east-1:468177950700:certificate/8cad672c-3e8e-4727-89d1-625e051608a9"
     },
     "BridgeEnv": {
       "Type": "String"
@@ -270,36 +276,27 @@
 
     "AwsKey": {
       "Type": "String",
-      "MinLength": 20,
-      "MaxLength": 20
+      "Default": "AWS"
     },
     "AwsSecretKey": {
       "Type": "String",
-      "MinLength": 40,
-      "MaxLength": 40,
-      "NoEcho": true
+      "Default": "AWS"
     },
     "AwsKeyUpload": {
       "Type": "String",
-      "MinLength": 20,
-      "MaxLength": 20
+      "Default": "AWS"
     },
     "AwsSecretKeyUpload": {
       "Type": "String",
-      "MinLength": 40,
-      "MaxLength": 40,
-      "NoEcho": true
+      "Default": "AWS"
     },
     "AwsKeyUploadCms": {
       "Type": "String",
-      "MinLength": 20,
-      "MaxLength": 20
+      "Default": "AWS"
     },
     "AwsSecretKeyUploadCms": {
       "Type": "String",
-      "MinLength": 40,
-      "MaxLength": 40,
-      "NoEcho": true
+      "Default": "AWS"
     },
 
     "BridgeHealthcodeKey": {
@@ -337,7 +334,8 @@
     },
 
     "EnterpriseStormpathHref": {
-      "Type": "String"
+      "Type": "String",
+      "Default": "https://enterprise.stormpath.io/v1/applications/1aa2QCILgHxWVt68TM9rYR"
     },
     "EnterpriseStormpathId": {
       "Type": "String"
@@ -412,31 +410,7 @@
             {
               "Effect": "Allow",
               "Action": "dynamodb:*",
-              "Resource": [
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:dynamodb:::",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      {
-                        "Ref": "BridgeEnv"
-                      },
-                      "-",
-                      {
-                        "Ref": "BridgeUser"
-                      },
-                      "/*"
-                    ]
-                  ]
-                }
-              ]
+              "Resource": "*"
             }
           ]
         },
@@ -500,12 +474,79 @@
                     {"Ref":"AppDeployBucket"}
                   ]]
 
+                },
+                {
+                  "Fn::Join": ["",
+                  [
+                    "arn:aws:s3:::",
+                    {"Ref":"AttachmentBucket"}, "/*"
+                  ]]
+                },
+                {
+                  "Fn::Join": ["",
+                  [
+                    "arn:aws:s3:::",
+                    {"Ref":"UploadBucket"}, "/*"
+
+                  ]]
+                },
+                {
+                  "Fn::Join": ["",
+                  [
+                    "arn:aws:s3:::",
+                    {"Ref":"ConsentsBucket"}, "/*"
+                  ]]
+                },
+                {
+                  "Fn::Join": ["",
+                  [
+                    "arn:aws:s3:::",
+                    {"Ref":"UploadCMSCertBucket"}, "/*"
+                  ]]
+                },
+                {
+                  "Fn::Join": ["",
+                  [
+                    "arn:aws:s3:::",
+                    {"Ref":"UploadCMSPrivBucket"}, "/*"
+                  ]]
+                },
+                {
+                  "Fn::Join": ["",
+                  [
+                    "arn:aws:s3:::",
+                    {"Ref":"AppDeployBucket"}, "/*"
+                  ]]
+
                 }
               ]
             }
           ]
         },
         "PolicyName": "AppS3AccessPolicy",
+        "Roles": [
+          {
+            "Ref": "AppserverRole"
+          }
+        ]
+      }
+    },
+    "SnsAccessPolicy": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "sns:*"
+              ],
+              "Resource": "*"
+            }
+          ]
+        },
+        "PolicyName": "AllowSNSAccess",
         "Roles": [
           {
             "Ref": "AppserverRole"
@@ -667,6 +708,26 @@
             "Namespace": "aws:elasticbeanstalk:environment",
             "OptionName": "EnvironmentType",
             "Value": "LoadBalanced"
+          },
+          {
+            "Namespace": "aws:elb:listener:443",
+            "OptionName": "ListenerProtocol",
+            "Value": "HTTPS"
+          },
+          {
+            "Namespace": "aws:elb:listener:443",
+            "OptionName": "InstanceProtocol",
+            "Value": "HTTP"
+          },
+          {
+            "Namespace": "aws:elb:listener:443",
+            "OptionName": "InstancePort",
+            "Value": "80"
+          },
+          {
+            "Namespace": "aws:elb:listener:443",
+            "OptionName": "SSLCertificateId",
+            "Value": { "Ref": "SSLCertArn" }
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
@@ -859,7 +920,7 @@
             "OptionName" : "redis_url",
             "Value" : {"Fn::Join": ["",
               [
-                "redis://ABC:DEF@",
+                "redis://AWS:AWS@",
                 {"Fn::GetAtt": ["ECCluster", "RedisEndpoint.Address"]},
                 ":",
                 {"Fn::GetAtt": ["ECCluster", "RedisEndpoint.Port"]}
