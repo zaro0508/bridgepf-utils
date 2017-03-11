@@ -1,0 +1,2 @@
+deploy:
+  artifact: target/universal/bridgepf-0.1-SNAPSHOT.zip

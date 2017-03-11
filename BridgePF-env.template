@@ -280,7 +280,8 @@
     },
     "AwsSecretKey": {
       "Type": "String",
-      "Default": "AWS"
+      "Default": "AWS",
+      "NoEcho": true
     },
     "AwsKeyUpload": {
       "Type": "String",
@@ -288,7 +289,8 @@
     },
     "AwsSecretKeyUpload": {
       "Type": "String",
-      "Default": "AWS"
+      "Default": "AWS",
+      "NoEcho": true
     },
     "AwsKeyUploadCms": {
       "Type": "String",
@@ -296,7 +298,8 @@
     },
     "AwsSecretKeyUploadCms": {
       "Type": "String",
-      "Default": "AWS"
+      "Default": "AWS",
+      "NoEcho": true
     },
 
     "BridgeHealthcodeKey": {
@@ -662,6 +665,20 @@
     "BridgeApplication": {
       "Type": "AWS::ElasticBeanstalk::Application",
       "Properties": {
+        "ApplicationName": {
+          "Fn::Join": [
+            "-",
+            [
+              "BridgePF",
+              {
+                "Ref": "BridgeUser"
+              },
+              {
+                "Ref": "BridgeEnv"
+              }
+            ]
+          ]
+        },
         "Description": {
           "Fn::Join": [
             " ",
@@ -757,12 +774,12 @@
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : "aws_key",
+            "OptionName" : "default_aws_key",
             "Value" : { "Ref" : "AwsKey" }
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : "aws_secret_key",
+            "OptionName" : "default_aws_secret_key",
             "Value" : { "Ref" : "AwsSecretKey" }
           },
           {
