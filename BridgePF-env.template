@@ -26,7 +26,9 @@
             "AppDeployBucket",
             "AppDeployFile",
             "EC2InstanceType",
-            "SSLCertArn"
+            "SSLCertArn",
+            "DNSHostname",
+            "DNSDomain"
           ]
         },
         {
@@ -240,6 +242,17 @@
       "Type": "String",
       "Description": "S3 file to deploy to elastic beanstalk",
       "Default": "elasticbeanstalk.zip"
+    },
+
+    "DNSHostname": {
+      "Type": "String",
+      "Description": "DNS Hostname for deployment",
+      "Default": "dev"
+    },
+    "DNSDomain": {
+      "Type": "String",
+      "Description": "DNS Domain name for deployment",
+      "Default": "museborn.com"
     },
 
     "UploadBucket": {
@@ -626,6 +639,20 @@
         "CacheSecurityGroupName": {"Ref": "ECSecurityGroup"},
         "EC2SecurityGroupName": {"Ref": "BridgeAppServers"},
         "EC2SecurityGroupOwnerId": {"Ref": "AWS::AccountId"}
+      }
+    },
+
+    "AppDNS": {
+      "Type" : "AWS::Route53::RecordSet",
+      "Properties" : {
+         "HostedZoneName" : { "Fn::Join": ["", [{"Ref": "DNSDomain"}, "."]]},
+         "Comment" : { "Fn::Join": [" ", [ "BridgePF", {"Ref": "BridgeEnv"}, {"Ref": "BridgeUser"}, "stack" ]]},
+         "Name" : { "Fn::Join" : [ "", [ { "Ref": "DNSHostname" }, ".", {"Ref": "DNSDomain"}, "." ]]},
+         "Type" : "CNAME",
+         "TTL" : "900",
+         "ResourceRecords" : [
+            { "Fn::GetAtt" : [ "BridgeEnvironment", "EndpointURL" ]}
+         ]
       }
     },
     "ECCluster": {
