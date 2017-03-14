@@ -1,1 +1,0 @@
-web: ./bin/bridgepf -Dhttp.port=5000 -Dconfig.file=conf/application.conf
