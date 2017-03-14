@@ -62,7 +62,8 @@
             "AttachmentBucket",
             "UploadCMSCertBucket",
             "UploadCMSPrivBucket",
-            "ConsentsBucket"
+            "ConsentsBucket",
+            "HostPostfix"
           ]
         },
         {
@@ -79,7 +80,6 @@
         
             "FphsIdAddLimit",
             "ExternalIdAddLimit",
-            "HostPostfix",
             "WebservicesUrl",
             "UddSqsQueueUrl",
             "StudyWhitelist",
@@ -320,7 +320,8 @@
       "Type": "String"
     },
     "HostPostfix": {
-      "Type": "String"
+      "Type": "String",
+      "Default": "-dev.museborn.com"
     },
     "WebservicesUrl": {
       "Type": "String"
@@ -984,7 +985,7 @@
             "Value" : { "Ref" : "TestSynapseUserId" }
           }
         ],
-        "SolutionStackName": "64bit Amazon Linux 2016.09 v2.4.2 running Java 8"
+        "SolutionStackName": "64bit Amazon Linux 2016.09 v2.4.3 running Java 8"
       }
     },
     "BridgeApplicationVersion": {
