@@ -289,7 +289,7 @@
 
     "AwsKey": {
       "Type": "String",
-      "Default": "AWS"
+      "Default": "AKIAJDDYFYRK56ZYMUYQ"
     },
     "AwsSecretKey": {
       "Type": "String",
@@ -298,7 +298,7 @@
     },
     "AwsKeyUpload": {
       "Type": "String",
-      "Default": "AWS"
+      "Default": "AKIAJDDYFYRK56ZYMUYQ"
     },
     "AwsSecretKeyUpload": {
       "Type": "String",
@@ -307,7 +307,7 @@
     },
     "AwsKeyUploadCms": {
       "Type": "String",
-      "Default": "AWS"
+      "Default": "AKIAJDDYFYRK56ZYMUYQ"
     },
     "AwsSecretKeyUploadCms": {
       "Type": "String",
@@ -355,7 +355,8 @@
       "Default": "https://enterprise.stormpath.io/v1/applications/1aa2QCILgHxWVt68TM9rYR"
     },
     "EnterpriseStormpathId": {
-      "Type": "String"
+      "Type": "String",
+      "Default": "49EXAXJ87F11UQ7ILSS1GA80V"
     },
     "EnterpriseStormpathSecret": {
       "Type": "String",
@@ -594,6 +595,48 @@
         ]
       }
     },
+    "CloudwatchLogsPolicy": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:GetLogEvents",
+                "logs:PutLogEvents",
+                "logs:DescribeLogGroups",
+                "logs:DescribeLogStreams",
+                "logs:PutRetentionPolicy"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:logs:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":*:*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "PolicyName": "AllowCWLogsPull",
+        "Roles": [
+          {
+            "Ref": "AppserverRole"
+          }
+        ]
+      }
+    },
     "AppserverRole": {
       "Type": "AWS::IAM::Role",
       "Properties": {
@@ -770,10 +813,26 @@
             "Value": "80"
           },
           {
+            "Namespace": "aws:elasticbeanstalk:cloudwatch:logs",
+            "OptionName": "StreamLogs",
+            "Value": "true"
+          },
+          {
+            "Namespace": "aws:elasticbeanstalk:cloudwatch:logs",
+            "OptionName": "DeleteOnTerminate",
+            "Value": "true"
+          },
+          {
+            "Namespace": "aws:elasticbeanstalk:cloudwatch:logs",
+            "OptionName": "RetentionInDays",
+            "Value": "30"
+          },
+          {
             "Namespace": "aws:elb:listener:443",
             "OptionName": "SSLCertificateId",
             "Value": { "Ref": "SSLCertArn" }
           },
+
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
             "OptionName" : "bridge_env",
@@ -802,12 +861,12 @@
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : "default_aws_key",
+            "OptionName" : "aws_key",
             "Value" : { "Ref" : "AwsKey" }
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : "default_aws_secret_key",
+            "OptionName" : "aws_secret_key",
             "Value" : { "Ref" : "AwsSecretKey" }
           },
           {
