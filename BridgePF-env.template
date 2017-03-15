@@ -861,12 +861,12 @@
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : "aws_key",
+            "OptionName" : "default_aws_key",
             "Value" : { "Ref" : "AwsKey" }
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : "aws_secret_key",
+            "OptionName" : "default_aws_secret_key",
             "Value" : { "Ref" : "AwsSecretKey" }
           },
           {
