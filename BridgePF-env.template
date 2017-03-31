@@ -835,113 +835,113 @@
 
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : "bridge_env",
+            "OptionName" : "BRIDGE_ENV",
             "Value" : { "Ref" : "BridgeEnv" }
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : "bridge_user",
+            "OptionName" : "BRIDGE_USER",
             "Value" : { "Ref" : "BridgeUser" }
           },
 
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : "admin_email",
+            "OptionName" : "ADMIN_EMAIL",
             "Value" : { "Ref" : "AdminEmail" }
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : "admin_password",
+            "OptionName" : "ADMIN_PASSWORD",
             "Value" : { "Ref" : "AdminPassword" }
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : "async_worker_thread_count",
+            "OptionName" : "ASYNC_WORKER_THREAD_COUNT",
             "Value" : { "Ref" : "AsyncWorkerThreadCount" }
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : "default_aws_key",
+            "OptionName" : "AWS_KEY",
             "Value" : { "Ref" : "AwsKey" }
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : "default_aws_secret_key",
+            "OptionName" : "AWS_SECRET_KEY",
             "Value" : { "Ref" : "AwsSecretKey" }
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : "aws_key_upload",
+            "OptionName" : "AWS_KEY_UPLOAD",
             "Value" : { "Ref" : "AwsKeyUpload" }
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : "aws_secret_key_upload",
+            "OptionName" : "AWS_SECRET_KEY_UPLOAD",
             "Value" : { "Ref" : "AwsSecretKeyUpload" }
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : "aws_key_upload_cms",
+            "OptionName" : "AWS_KEY_UPLOAD_CMS",
             "Value" : { "Ref" : "AwsKeyUploadCms" }
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : "aws_secret_key_upload_cms",
+            "OptionName" : "AWS_SECRET_KEY_UPLOAD_CMS",
             "Value" : { "Ref" : "AwsSecretKeyUploadCms" }
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : "bridge_healthcode_key",
+            "OptionName" : "BRIDGE_HEALTHCODE_KEY",
             "Value" : { "Ref" : "BridgeHealthcodeKey" }
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : "bridge_healthcode_redis_key",
+            "OptionName" : "BRIDGE_HEALTHCODE_REDIS_KEY",
             "Value" : { "Ref" : "BridgeHealthcodeRedisKey" }
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : "ddb_max_retries",
+            "OptionName" : "DDB_MAX_RETRIES",
             "Value" : { "Ref" : "DDBMaxRetries" }
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : {"Fn::Join": ["_", [{"Ref":"BridgeEnv"},"fphs","id","add","limit"]]},
+            "OptionName" : "FPHS_ID_ADD_LIMIT",
             "Value" : { "Ref" : "FphsIdAddLimit" }
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : {"Fn::Join": ["_", [{"Ref":"BridgeEnv"},"external","id","add","limit"]]},
+            "OptionName" : "EXTERNAL_ID_ADD_LIMIT",
             "Value" : { "Ref" : "ExternalIdAddLimit" }
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : {"Fn::Join": ["_", [{"Ref":"BridgeEnv"},"host","postfix"]]},
+            "OptionName" : "HOST_POSTFIX",
             "Value" : { "Ref" : "HostPostfix" }
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : {"Fn::Join": ["_", [{"Ref":"BridgeEnv"},"webservices","url"]]},
+            "OptionName" : "WEBSERVICES_URL",
             "Value" : { "Ref" : "WebservicesUrl" }
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : {"Fn::Join": ["_", [{"Ref":"BridgeEnv"},"upload","bucket"]]},
+            "OptionName" : "UPLOAD_BUCKET",
             "Value" : { "Ref" : "UploadBucket" }
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : {"Fn::Join": ["_", [{"Ref":"BridgeEnv"},"attachment","bucket"]]},
+            "OptionName" : "ATTACHMENT_BUCKET",
             "Value" : { "Ref" : "AttachmentBucket" }
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : {"Fn::Join": ["_", [{"Ref":"BridgeEnv"},"upload","cms","cert","bucket"]]},
+            "OptionName" : "UPLOAD_CMS_CERT_BUCKET",
             "Value" : { "Ref" : "UploadCMSCertBucket" }
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : {"Fn::Join": ["_", [{"Ref":"BridgeEnv"},"upload","cms","priv","bucket"]]},
+            "OptionName" : "UPLOAD_CMS_PRIV_BUCKET",
             "Value" : { "Ref" : "UploadCMSPrivBucket" }
           },
           {
@@ -951,77 +951,77 @@
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : {"Fn::Join": ["_", [{"Ref":"BridgeEnv"},"udd","sqs","queue","url"]]},
+            "OptionName" : "UDD_SQS_QUEUE_URL",
             "Value" : { "Ref" : "UddSqsQueueUrl" }
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : {"Fn::Join": ["_", [{"Ref":"BridgeEnv"},"study","whitelist"]]},
+            "OptionName" : "STUDY_WHITELIST",
             "Value" : { "Ref" : "StudyWhitelist" }
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : "email_unsubscribe_token",
+            "OptionName" : "EMAIL_UNSUBSCRIBE_TOKEN",
             "Value" : { "Ref" : "EmailUnsubscribeToken" }
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : "enterprise_stormpath_application_href",
+            "OptionName" : "ENTERPRISE_STORMPATH_APPLICATION_HREF",
             "Value" : { "Ref" : "EnterpriseStormpathHref" }
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : "enterprise_stormpath_id",
+            "OptionName" : "ENTERPRISE_STORMPATH_ID",
             "Value" : { "Ref" : "EnterpriseStormpathId" }
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : "enterprise_stormpath_secret",
+            "OptionName" : "ENTERPRISE_STORMPATH_SECRET",
             "Value" : { "Ref" : "EnterpriseStormpathSecret" }
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : "exporter_synapse_id",
+            "OptionName" : "EXPORTER_SYNAPSE_ID",
             "Value" : { "Ref" : "ExporterSynapseId" }
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : "external_id_lock_duration",
+            "OptionName" : "EXTERNAL_ID_LOCK_DURATION",
             "Value" : { "Ref" : "ExternalIdLockDuration" }
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : "max_num_zip_entries",
+            "OptionName" : "MAX_NUM_ZIP_ENTRIES",
             "Value" : { "Ref" : "MaxNumZipEntries" }
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : "max_num_entry_size",
+            "OptionName" : "MAX_NUM_ENTRY_SIZE",
             "Value" : { "Ref" : "ZipEntrySize" }
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : "redis_max_total",
+            "OptionName" : "REDIS_MAX_TOTAL",
             "Value" : { "Ref" : "RedisMaxTotal" }
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : "redis_min_idle",
+            "OptionName" : "REDIS_MIN_IDLE",
             "Value" : { "Ref" : "RedisMinIdle" }
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : "redis_max_idle",
+            "OptionName" : "REDIS_MAX_IDLE",
             "Value" : { "Ref" : "RedisMaxIdle" }
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : "redis_timeout",
+            "OptionName" : "REDIS_TIMEOUT",
             "Value" : { "Ref" : "RedisTimeout" }
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : "redis_url",
+            "OptionName" : "REDIS_URL",
             "Value" : {"Fn::Join": ["",
               [
                 "redis://AWS:AWS@",
@@ -1032,42 +1032,42 @@
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : "route53_zone",
+            "OptionName" : "ROUTE53_ZONE",
             "Value" : { "Ref" : "Route53Zone" }
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : "sns_key",
+            "OptionName" : "SNS_KEY",
             "Value" : { "Ref" : "SnsKey" }
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : "sns_secret_key",
+            "OptionName" : "SNS_SECRET_KEY",
             "Value" : { "Ref" : "SnsSecretKey" }
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : "support_email",
+            "OptionName" : "SUPPORT_EMAIL",
             "Value" : { "Ref" : "SupportEmail" }
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : "synapse_api_key",
+            "OptionName" : "SYNAPSE_API_KEY",
             "Value" : { "Ref" : "SynapseApiKey" }
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : "synapse_user",
+            "OptionName" : "SYNAPSE_USER",
             "Value" : { "Ref" : "SynapseUser" }
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : "sysops_email",
+            "OptionName" : "SYSOPS_EMAIL",
             "Value" : { "Ref" : "SysopsEmail" }
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : "test_synapse_user_id",
+            "OptionName" : "TEST_SYNAPSE_USER_ID",
             "Value" : { "Ref" : "TestSynapseUserId" }
           }
         ],
@@ -1105,6 +1105,12 @@
           }
         ]
       }
+    }
+  },
+  "Outputs" : {
+    "ElasticBeanstalkEnvironment" : {
+      "Description": "Environment string of EB to deploy into",
+      "Value" : { "Ref" : "BridgeEnvironment"}
     }
   }
 }
