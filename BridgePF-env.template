@@ -946,7 +946,7 @@
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : {"Fn::Join": ["_", [{"Ref":"BridgeEnv"},"consents","bucket"]]},
+            "OptionName" : "CONSENTS_BUCKET",
             "Value" : { "Ref" : "ConsentsBucket" }
           },
           {

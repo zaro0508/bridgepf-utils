@@ -5,7 +5,7 @@ echo 'Building code'
 cd ~/PycharmProjects/BridgePF
 git stash && git pull
 rsync -av ~/PycharmProjects/bridgepf-utils/ELBMigration/BridgePF/ ~/PycharmProjects/BridgePF/
-activator clean dist
+sbt clean dist
 if [ -n "$1" ]; then
     MYVER=$1-`date +%s`
 	echo Pushing to eb, version ${MYVER}
