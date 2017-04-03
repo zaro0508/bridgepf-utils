@@ -46,7 +46,11 @@
             "AwsKeyUpload",
             "AwsSecretKeyUpload",
             "AwsKeyUploadCms",
-            "AwsSecretKeyUploadCms"
+            "AwsSecretKeyUploadCms",
+            "AwsSnsKey",
+            "AwsSnsSecretKey",
+            "BridgeHealthcodeKey",
+            "BridgeHealthcodeRedisKey"
           ]
         },
         {
@@ -69,20 +73,23 @@
           ]
         },
         {
+          "Label": { "default" : "Web Interface Settings"},
+          "Parameters": [
+            "WebservicesUrl"
+          ]
+        },
+        {
           "Label" : { "default" : "Bridge Server Config File Settings, empty settings will not be set, defaulting to conf/bridge-server.conf" },
           "Parameters" : [
             "AdminEmail",
             "AdminPassword",
             "AsyncWorkerThreadCount",
-        
-            "BridgeHealthcodeKey",
-            "BridgeHealthcodeRedisKey",
 
             "DDBMaxRetries",
         
             "FphsIdAddLimit",
             "ExternalIdAddLimit",
-            "WebservicesUrl",
+
             "UddSqsQueueUrl",
             "StudyWhitelist",
         
@@ -96,8 +103,6 @@
             "ZipEntrySize",
 
             "Route53Zone",
-            "SnsKey",
-            "SnsSecretKey",
         
             "SupportEmail",
             "SynapseApiKey",
@@ -316,10 +321,14 @@
     },
 
     "BridgeHealthcodeKey": {
-      "Type": "String"
+      "Type": "String",
+      "Default": "KST6Md7/phHLZg+1FBgbmngKi53K/e7gLptQOEDii0M=",
+      "NoEcho": true
     },
     "BridgeHealthcodeRedisKey": {
-      "Type": "String"
+      "Type": "String",
+      "Default": "zEjhUL/FVsN8vti6HO27XgrM32i1a3huEuXWD4Hq06I=",
+      "NoEcho": true
     },
 
     "DDBMaxRetries": {
@@ -394,10 +403,10 @@
     "Route53Zone": {
       "Type": "String"
     },
-    "SnsKey": {
+    "AwsSnsKey": {
       "Type": "String"
     },
-    "SnsSecretKey": {
+    "AwsSnsSecretKey": {
       "Type": "String",
       "NoEcho": true
     },
@@ -1038,12 +1047,12 @@
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
             "OptionName" : "SNS_KEY",
-            "Value" : { "Ref" : "SnsKey" }
+            "Value" : { "Ref" : "AwsSnsKey" }
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
             "OptionName" : "SNS_SECRET_KEY",
-            "Value" : { "Ref" : "SnsSecretKey" }
+            "Value" : { "Ref" : "AwsSnsSecretKey" }
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
