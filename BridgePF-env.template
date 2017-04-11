@@ -124,6 +124,9 @@
       ]
     }
   },
+  "Conditions": {
+
+  },
   "Parameters": {
     "EC2KeyName": {
       "Description": "The EC2 Key Pair to allow SSH access to appservers",
@@ -282,14 +285,17 @@
     },
 
     "AdminEmail": {
-      "Type": "String"
+      "Type": "String",
+      "Default": "dummy-value"
     },
     "AdminPassword": {
       "Type": "String",
-      "NoEcho": true
+      "NoEcho": true,
+      "Default": "dummy-value"
     },
     "AsyncWorkerThreadCount": {
-      "Type": "String"
+      "Type": "String",
+      "Default": "20"
     },
 
     "AwsKey": {
@@ -320,45 +326,6 @@
       "NoEcho": true
     },
 
-    "BridgeHealthcodeKey": {
-      "Type": "String",
-      "Default": "KST6Md7/phHLZg+1FBgbmngKi53K/e7gLptQOEDii0M=",
-      "NoEcho": true
-    },
-    "BridgeHealthcodeRedisKey": {
-      "Type": "String",
-      "Default": "zEjhUL/FVsN8vti6HO27XgrM32i1a3huEuXWD4Hq06I=",
-      "NoEcho": true
-    },
-
-    "DDBMaxRetries": {
-      "Type": "String"
-    },
-
-    "FphsIdAddLimit": {
-      "Type": "String"
-    },
-    "ExternalIdAddLimit": {
-      "Type": "String"
-    },
-    "HostPostfix": {
-      "Type": "String",
-      "Default": "-dev.museborn.com"
-    },
-    "WebservicesUrl": {
-      "Type": "String"
-    },
-    "UddSqsQueueUrl": {
-      "Type": "String"
-    },
-    "StudyWhitelist": {
-      "Type": "String"
-    },
-
-    "EmailUnsubscribeToken": {
-      "Type": "String"
-    },
-
     "EnterpriseStormpathHref": {
       "Type": "String",
       "Default": "https://enterprise.stormpath.io/v1/applications/1aa2QCILgHxWVt68TM9rYR"
@@ -372,59 +339,115 @@
       "NoEcho": true
     },
 
-    "ExporterSynapseId": {
-      "Type": "String"
-    },
-
-    "ExternalIdLockDuration": {
-      "Type": "String"
-    },
-
-    "MaxNumZipEntries": {
-      "Type": "String"
-    },
-    "ZipEntrySize": {
-      "Type": "String"
-    },
-
-    "RedisMaxTotal": {
-      "Type": "String"
-    },
-    "RedisMinIdle": {
-      "Type": "String"
-    },
-    "RedisMaxIdle": {
-      "Type": "String"
-    },
-    "RedisTimeout": {
-      "Type": "String"
-    },
-
-    "Route53Zone": {
-      "Type": "String"
-    },
-    "AwsSnsKey": {
-      "Type": "String"
-    },
-    "AwsSnsSecretKey": {
+    "BridgeHealthcodeKey": {
       "Type": "String",
+      "Default": "KST6Md7/phHLZg+1FBgbmngKi53K/e7gLptQOEDii0M=",
+      "NoEcho": true
+    },
+    "BridgeHealthcodeRedisKey": {
+      "Type": "String",
+      "Default": "zEjhUL/FVsN8vti6HO27XgrM32i1a3huEuXWD4Hq06I=",
       "NoEcho": true
     },
 
+    "WebservicesUrl": {
+      "Type": "String",
+      "Default": "https://dev.museborn.com"
+    },
+    "HostPostfix": {
+      "Type": "String",
+      "Default": "-dev.museborn.com"
+    },
+    "DDBMaxRetries": {
+      "Type": "String",
+      "Default": "1"
+    },
+    "FphsIdAddLimit": {
+      "Type": "String",
+      "Default": "10"
+    },
+
+    "ExternalIdAddLimit": {
+      "Type": "String",
+      "Default": "10"
+    },
+    "UddSqsQueueUrl": {
+      "Type": "String",
+      "Default": "https://sqs.us-east-1.amazonaws.com/649232250620/Bridge-WorkerPlatform-Request-dev"
+    },
+    "StudyWhitelist": {
+      "Type": "String",
+      "Default": "api"
+    },
+    "EmailUnsubscribeToken": {
+      "Type": "String",
+      "Default": "dummy-value"
+    },
+    "ExporterSynapseId": {
+      "Type": "String",
+      "Default": "3325672"
+    },
+
+    "ExternalIdLockDuration": {
+      "Type": "String",
+      "Default": "30000"
+    },
+    "MaxNumZipEntries": {
+      "Type": "String",
+      "Default": "100"
+    },
+    "ZipEntrySize": {
+      "Type": "String",
+      "Default": "25000000"
+    },
+    "RedisMaxTotal": {
+      "Type": "String",
+      "Default": "50"
+    },
+    "RedisMinIdle": {
+      "Type": "String",
+      "Default": "3"
+    },
+    "RedisMaxIdle": {
+      "Type": "String",
+      "Default": "50"
+    },
+    "RedisTimeout": {
+      "Type": "String",
+      "Default": "2000"
+    },
+    "Route53Zone": {
+      "Type": "String",
+      "Default": "ZP0HNVK1V670D"
+    },
+    "AwsSnsKey": {
+      "Type": "String",
+      "Default": "AWS"
+    },
+    "AwsSnsSecretKey": {
+      "Type": "String",
+      "NoEcho": true,
+      "Default": "AWS"
+    },
     "SupportEmail": {
-      "Type": "String"
+      "Type": "String",
+      "Default": "Bridge (Sage Bionetworks) <support@sagebridge.org>"
     },
     "SynapseApiKey": {
-      "Type": "String"
+      "Type": "String",
+      "Default": "your-synapse-apikey"
     },
     "SynapseUser": {
-      "Type": "String"
+      "Type": "String",
+      "Default": "your-synapse-user"
     },
     "SysopsEmail": {
-      "Type": "String"
+      "Type": "String",
+      "Default": "Bridge IT <bridge-testing+sysops@sagebase.org>"
     },
     "TestSynapseUserId": {
-      "Type": "String"
+      "Type": "String",
+      "Default": "3348228"
     }
   },
   "Resources": {
@@ -900,12 +923,12 @@
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : "BRIDGE_HEALTHCODE_KEY",
+            "OptionName" : "AWS_BRIDGE_HEALTHCODE_KEY",
             "Value" : { "Ref" : "BridgeHealthcodeKey" }
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : "BRIDGE_HEALTHCODE_REDIS_KEY",
+            "OptionName" : "AWS_BRIDGE_HEALTHCODE_REDIS_KEY",
             "Value" : { "Ref" : "BridgeHealthcodeRedisKey" }
           },
           {
