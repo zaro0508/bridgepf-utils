@@ -30,8 +30,8 @@
 		*	mkdir -p $HOME/bridge
 		*	bash $TRAVIS_BUILD_DIR/dist/create_bridge_config.sh
 	*	In elasticbeanstalk deploy stanza (with appropriate settings), assure the following settings exist:
-			*	skip_cleanup: true
-			*	bucket_name: DEPLOYMENTBUCKET
+		*	skip_cleanup: true
+		*	bucket_name: DEPLOYMENTBUCKET
 	*	Pushing to travis should test and push to both heroku and elastic beanstalk now
 
 8.	Suggest testing reds on travis itself instead of remotely:
