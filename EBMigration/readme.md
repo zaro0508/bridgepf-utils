@@ -25,24 +25,14 @@
 6.	On launch, app should be accessible via https://HOSTNAME.DOMAINNAME as expected
 	
 7.	In code .travis.yml, add stanza for elastic beanstalk deployment:
+	* 	Run 'travis setup elasticbeanstalk' from source directory, input settings from AWS. (Outputs tab of Cloudformation stack should provide env string)
 	*	To env steps add: (only necessary if settings vary significantly from defaults in code, specifically s3 buckets.)
 		*	mkdir -p $HOME/bridge
 		*	bash $TRAVIS_BUILD_DIR/dist/create_bridge_config.sh
-	*	Add second deploy stanza (with appropriate settings) (Outputs tab of Cloudformation stack should provide env string)
-		*	deploy:
-			*	provider: elasticbeanstalk 
+	*	In elasticbeanstalk deploy stanza (with appropriate settings), assure the following settings exist:
 			*	skip_cleanup: true
 			*	bucket_name: DEPLOYMENTBUCKET
-			*	zip_file: target/universal/bridgepf-0.1-SNAPSHOT.zip
-			*	access_key_id: ACCESS_KEY
-			*	secret_access_key: SECURED_SECRET_ACCESS_KEY
-			*	region: us-east-1
-			*	app: BridgePF-USER-ENV
-			*	env: EBEnv
-			*	on:
-				* repo: consolecowboy/BridgePF
-				* branch: develop
-		*	Pushing to travis should test and push to both heroku and elastic beanstalk now
+	*	Pushing to travis should test and push to both heroku and elastic beanstalk now
 
 8.	Suggest testing reds on travis itself instead of remotely:
 	*	At top of travis.yml add
