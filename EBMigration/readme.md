@@ -32,6 +32,7 @@
 	*	In elasticbeanstalk deploy stanza (with appropriate settings), assure the following settings exist:
 		*	skip_cleanup: true
 		*	bucket_name: DEPLOYMENTBUCKET
+		*	zip_file: target/universal/bridgepf-0.1-SNAPSHOT.zip
 	*	Pushing to travis should test and push to both heroku and elastic beanstalk now
 
 8.	Suggest testing reds on travis itself instead of remotely:
