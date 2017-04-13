@@ -248,8 +248,8 @@
     },
     "AppDeployFile": {
       "Type": "String",
-      "Description": "S3 file to deploy to elastic beanstalk",
-      "Default": "elasticbeanstalk.zip"
+      "Description": "Initial file to deploy to elastic beanstalk from s3 bucket",
+      "Default": "bridgepf-0.1-SNAPSHOT.zip"
     },
 
     "DNSHostname": {
