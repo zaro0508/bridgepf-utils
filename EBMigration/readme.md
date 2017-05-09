@@ -11,7 +11,7 @@
 	*	sbt clean dist
 	*	aws s3 cp target/universal/bridgepf-0.1-SNAPSHOT.zip s3://DEPLOYMENTBUCKET/
 	
-4.	Clone Repos: git@github.com:consolecowboy/bridgepf-utils.git
+4.	Clone Repos: git@github.com:Sage-Bionetworks/bridgepf-utils.git
 
 5.	Go to AWS->Cloudformation and create new stack
 	*	Use template from bridgepf-utils/BridgePF-env.template

@@ -20,7 +20,7 @@
       "ParameterGroups" : [
         {
           "Label" : { "default" : "App Deployment Settings" },
-          "Parameters" : [      
+          "Parameters" : [
             "EC2KeyName",
             "ElasticCacheInstanceType",
             "AppDeployBucket",
@@ -86,29 +86,29 @@
             "AsyncWorkerThreadCount",
 
             "DDBMaxRetries",
-        
+
             "FphsIdAddLimit",
             "ExternalIdAddLimit",
 
             "UddSqsQueueUrl",
             "StudyWhitelist",
-        
+
             "EmailUnsubscribeToken",
-        
+
             "ExporterSynapseId",
-        
+
             "ExternalIdLockDuration",
-        
+
             "MaxNumZipEntries",
             "ZipEntrySize",
 
             "Route53Zone",
-        
+
             "SupportEmail",
             "SynapseApiKey",
             "SynapseUser",
             "SysopsEmail",
-        
+
             "TestSynapseUserId"
           ]
         },
@@ -131,18 +131,21 @@
     "EC2KeyName": {
       "Description": "The EC2 Key Pair to allow SSH access to appservers",
       "Type": "AWS::EC2::KeyPair::KeyName",
-      "ConstraintDescription": "must be the name of an existing EC2 KeyPair."
+      "ConstraintDescription": "must be the name of an existing EC2 KeyPair.",
+      "Default": "BridgePF-AWS-Dev"
     },
     "SSLCertArn": {
       "Description": "SSL certificate for load balancer",
       "Type": "String",
-      "Default": "arn:aws:acm:us-east-1:468177950700:certificate/8cad672c-3e8e-4727-89d1-625e051608a9"
+      "Default": "arn:aws:acm:us-east-1:649232250620:certificate/2738846d-b6ad-4b5b-a956-0db9ba4509ac"
     },
     "BridgeEnv": {
-      "Type": "String"
+      "Type": "String",
+      "Default": "dev"
     },
     "BridgeUser": {
-      "Type": "String"
+      "Type": "String",
+      "Default": "heroku"
     },
     "ElasticCacheInstanceType": {
       "Type": "String",
@@ -244,7 +247,7 @@
     "AppDeployBucket": {
       "Type": "String",
       "Description": "S3 bucket for deployment",
-      "Default": "com-museborn-deployment-dev"
+      "Default": "org-sagebridge-deployment-dev"
     },
     "AppDeployFile": {
       "Type": "String",
@@ -260,38 +263,38 @@
     "DNSDomain": {
       "Type": "String",
       "Description": "DNS Domain name for deployment",
-      "Default": "museborn.com"
+      "Default": "sagebridge.org"
     },
 
     "UploadBucket": {
       "Type": "String",
-      "Default": "com-museborn-upload-dev"
+      "Default": "org-sagebridge-upload-dev"
     },
     "AttachmentBucket": {
       "Type": "String",
-      "Default": "com-museborn-attachment-dev"
+      "Default": "org-sagebridge-attachment-dev"
     },
     "UploadCMSCertBucket": {
       "Type": "String",
-      "Default": "com-museborn-upload-cms-cert-dev"
+      "Default": "org-sagebridge-upload-cms-cert-dev"
     },
     "UploadCMSPrivBucket": {
       "Type": "String",
-      "Default": "com-museborn-upload-cms-priv-dev"
+      "Default": "org-sagebridge-upload-cms-priv-dev"
     },
     "ConsentsBucket": {
       "Type": "String",
-      "Default": "com-museborn-consents-dev"
+      "Default": "org-sagebridge-consents-dev"
     },
 
     "AdminEmail": {
       "Type": "String",
-      "Default": "dummy-value"
+      "Default": "SECRET"
     },
     "AdminPassword": {
       "Type": "String",
       "NoEcho": true,
-      "Default": "dummy-value"
+      "Default": "SECRET"
     },
     "AsyncWorkerThreadCount": {
       "Type": "String",
@@ -300,63 +303,64 @@
 
     "AwsKey": {
       "Type": "String",
-      "Default": "AKIAJDDYFYRK56ZYMUYQ"
+      "Default": "SECRET"
     },
     "AwsSecretKey": {
       "Type": "String",
-      "Default": "AWS",
+      "Default": "SECRET",
       "NoEcho": true
     },
     "AwsKeyUpload": {
       "Type": "String",
-      "Default": "AKIAJDDYFYRK56ZYMUYQ"
+      "Default": "SECRET"
     },
     "AwsSecretKeyUpload": {
       "Type": "String",
-      "Default": "AWS",
+      "Default": "SECRET",
       "NoEcho": true
     },
     "AwsKeyUploadCms": {
       "Type": "String",
-      "Default": "AKIAJDDYFYRK56ZYMUYQ"
+      "Default": "SECRET"
     },
     "AwsSecretKeyUploadCms": {
       "Type": "String",
-      "Default": "AWS",
+      "Default": "SECRET",
       "NoEcho": true
     },
 
     "EnterpriseStormpathHref": {
       "Type": "String",
-      "Default": "https://enterprise.stormpath.io/v1/applications/1aa2QCILgHxWVt68TM9rYR"
+      "Default": "SECRET"
     },
     "EnterpriseStormpathId": {
       "Type": "String",
-      "Default": "49EXAXJ87F11UQ7ILSS1GA80V"
+      "Default": "SECRET"
     },
     "EnterpriseStormpathSecret": {
       "Type": "String",
+      "Default": "SECRET",
       "NoEcho": true
     },
 
     "BridgeHealthcodeKey": {
       "Type": "String",
-      "Default": "KST6Md7/phHLZg+1FBgbmngKi53K/e7gLptQOEDii0M=",
+      "Default": "SECRET",
       "NoEcho": true
     },
     "BridgeHealthcodeRedisKey": {
       "Type": "String",
-      "Default": "zEjhUL/FVsN8vti6HO27XgrM32i1a3huEuXWD4Hq06I=",
+      "Default": "SECRET",
       "NoEcho": true
     },
 
     "WebservicesUrl": {
       "Type": "String",
-      "Default": "https://dev.museborn.com"
+      "Default": "https://dev.sagebridge.org"
     },
     "HostPostfix": {
       "Type": "String",
-      "Default": "-dev.museborn.com"
+      "Default": "-dev.sagebridge.org"
     },
     "DDBMaxRetries": {
       "Type": "String",
@@ -422,12 +426,12 @@
     },
     "AwsSnsKey": {
       "Type": "String",
-      "Default": "AWS"
+      "Default": "SECRET"
     },
     "AwsSnsSecretKey": {
       "Type": "String",
       "NoEcho": true,
-      "Default": "AWS"
+      "Default": "SECRET"
     },
     "SupportEmail": {
       "Type": "String",
@@ -435,11 +439,11 @@
     },
     "SynapseApiKey": {
       "Type": "String",
-      "Default": "your-synapse-apikey"
+      "Default": "SECRET"
     },
     "SynapseUser": {
       "Type": "String",
-      "Default": "your-synapse-user"
+      "Default": "SECRET"
     },
     "SysopsEmail": {
       "Type": "String",
@@ -923,12 +927,12 @@
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : "AWS_BRIDGE_HEALTHCODE_KEY",
+            "OptionName" : "BRIDGE_HEALTHCODE_KEY",
             "Value" : { "Ref" : "BridgeHealthcodeKey" }
           },
           {
             "Namespace" : "aws:elasticbeanstalk:application:environment",
-            "OptionName" : "AWS_BRIDGE_HEALTHCODE_REDIS_KEY",
+            "OptionName" : "BRIDGE_HEALTHCODE_REDIS_KEY",
             "Value" : { "Ref" : "BridgeHealthcodeRedisKey" }
           },
           {
@@ -1103,7 +1107,7 @@
             "Value" : { "Ref" : "TestSynapseUserId" }
           }
         ],
-        "SolutionStackName": "64bit Amazon Linux 2016.09 v2.4.3 running Java 8"
+        "SolutionStackName": "64bit Amazon Linux 2016.09 v2.4.4 running Java 8"
       }
     },
     "BridgeApplicationVersion": {
